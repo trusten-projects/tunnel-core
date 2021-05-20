@@ -40,5 +40,6 @@
     "test": "mocha --check-leaks **/*.test.js",
     "start": "./bin/server.js",
     "dev": "DEBUG=fusetunnel* nodemon bin/server.js --port 3000"
-  }
+  },
+  "private": false
 }
