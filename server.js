@@ -27,6 +27,9 @@ export default function(opt) {
     const router = new Router();
 
     router.get('/api/status', async (ctx, next) => {
+        if (opt.secret && ctx.headers.authorization !== opt.secret) {
+            ctx.throw(401);
+        }
         ctx.body = {
             tunnelsCount: manager.stats.tunnels,
             tunnels: manager.getClients(),
@@ -35,6 +38,9 @@ export default function(opt) {
     });
 
     router.get('/api/tunnels/:id/status', async (ctx, next) => {
+        if (opt.secret && ctx.headers.authorization !== opt.secret) {
+            ctx.throw(401);
+        }
         const clientId = ctx.params.id;
         const client = manager.getClient(clientId);
         if (!client) {
@@ -63,6 +69,9 @@ export default function(opt) {
 
         const isNewClientRequest = ctx.query['new'] !== undefined;
         if (isNewClientRequest) {
+            if (opt.secret && ctx.headers.authorization !== opt.secret) {
+                ctx.throw(401);
+            }
             const reqId = hri.random();
             debug('making new client with id %s', reqId);
             const info = await manager.newClient(reqId);
