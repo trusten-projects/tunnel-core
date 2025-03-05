@@ -72,7 +72,15 @@ export default function(opt) {
             if (opt.secret && ctx.headers.authorization !== opt.secret) {
                 ctx.throw(401);
             }
-            const reqId = hri.random();
+            let reqId;
+            console.log(ctx.query)
+            if (ctx.query['customSubdomain'] !== undefined) {
+                console.log(ctx.query['customSubdomain'])
+                reqId = ctx.query['customSubdomain'];
+            } else {
+                reqId = hri.random();
+            }
+            
             debug('making new client with id %s', reqId);
             const info = await manager.newClient(reqId);
 
